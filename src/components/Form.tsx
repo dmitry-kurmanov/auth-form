@@ -2,11 +2,40 @@ import "./Form.scss";
 
 export default function Form() {
   const validationCheck = (): boolean => {
-    //TODO add input.validationMessage to // aria-invalid="true"
-    // aria-errormessage and span with id //
-    //   https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage
-    // input..checkValidity() onSubmit
-    return true;
+    const email = document.getElementById("email") as HTMLInputElement;
+    const password = document.getElementById("password") as HTMLInputElement;
+
+    let result = true;
+
+    //TODO refactoring
+    const emailErrorMessage = document.getElementById("email-error-message");
+    if (email.checkValidity()) {
+      emailErrorMessage!.innerText = "";
+      email.setAttribute("aria-invalid", "false");
+      email.removeAttribute("aria-describedby");
+    } else {
+      emailErrorMessage!.innerText = "Error: " + email.validationMessage;
+      email.setAttribute("aria-invalid", "true");
+      email.setAttribute("aria-describedby", "email-error-message");
+      result = false;
+    }
+
+    const passwordErrorMessage = document.getElementById(
+      "password-error-message"
+    );
+    if (password.checkValidity()) {
+      passwordErrorMessage!.innerText = "";
+      password.setAttribute("aria-invalid", "false");
+      password.removeAttribute("aria-describedby");
+    } else {
+      passwordErrorMessage!.innerText = "Error: " + password.validationMessage;
+      password.setAttribute("aria-invalid", "true");
+      password.setAttribute("aria-describedby", "password-error-message");
+      result = false;
+    }
+    // EO TODO refactoring
+
+    return result;
   };
 
   return (
@@ -37,14 +66,11 @@ export default function Form() {
               aria-invalid="false"
               /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
               /*aria-errormessage="email-error-message"*/
-              aria-describedby="email-error-message-1"
             ></input>
             <span
               id="email-error-message"
               className="login-form__input-error-message"
-            >
-              Error: Enter a valid email address
-            </span>
+            ></span>
           </div>
 
           <div className="login-form__input-wrapper">
@@ -60,32 +86,31 @@ export default function Form() {
               aria-invalid="false"
               /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
               /*aria-errormessage="password-error-message"*/
-              aria-describedby="password-error-message-1"
             ></input>
             <span
               id="password-error-message"
               className="login-form__input-error-message"
-            >
-              Error: Enter a valid password
-            </span>
+            ></span>
           </div>
 
           <button
             onClick={function (e) {
               e.preventDefault();
-              const isValid = validationCheck();
+              const isValid = validationCheck(); // return invalid field ID instead of boolean
+              (document.getElementById("password") as HTMLInputElement).value =
+                "";
               if (isValid) {
                 //sendToserver();
                 //TODO if server response error
-                (
-                  document.getElementById("password") as HTMLInputElement
-                ).value = "";
-                (document.getElementById("email") as HTMLInputElement).focus();
                 document
                   .getElementById("serverMessage")
                   ?.classList.toggle("login-form__server-message--hidden");
+                (document.getElementById("email") as HTMLInputElement).focus();
                 //TODO if server response ok
                 // ... setState(loggedUser), setState("show success block")
+              } else {
+                (document.getElementById("email") as HTMLInputElement).focus();
+                // or (document.getElementById("password") as HTMLInputElement).focus();
               }
             }}
           >
