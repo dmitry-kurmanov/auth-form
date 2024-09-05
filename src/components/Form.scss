@@ -1,0 +1,35 @@
+@mixin visuallyHidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.login-form__fieldset {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.login-form__legend {
+  @include visuallyHidden();
+}
+
+.login-form__server-message--hidden {
+  display: none;
+}
+
+.login-form__input:focus::placeholder {
+  color: transparent;
+}
+
+.login-form__input-error-message {
+  @include visuallyHidden();
+}
+
+.login-form__input-error-message--hidden {
+  display: none;
+}
