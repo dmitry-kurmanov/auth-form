@@ -18,18 +18,14 @@
   @include visuallyHidden();
 }
 
-.login-form__server-message--hidden {
-  display: none;
-}
-
-.login-form__input:focus::placeholder {
-  color: transparent;
-}
-
 .login-form__input-error-message {
   @include visuallyHidden();
 }
 
 .login-form__input-error-message--hidden {
+  display: none;
+}
+
+.login-form__server-message--hidden {
   display: none;
 }

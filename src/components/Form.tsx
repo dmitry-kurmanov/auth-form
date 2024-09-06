@@ -1,4 +1,5 @@
-import "./Form.scss";
+import "./Form-UX.scss";
+import "./Form-UI.scss";
 
 export default function Form() {
   const validationCheck = (): boolean => {
@@ -43,7 +44,9 @@ export default function Form() {
 
   return (
     <div className="login-form">
-      <h1 aria-hidden="true">Login Form</h1>
+      <h1 className="login-form__header" aria-hidden="true">
+        Login Form
+      </h1>
       <form
         className="login-form__form"
         onSubmit={function (e) {
@@ -113,7 +116,7 @@ export default function Form() {
             ></span>
           </div>
 
-          <button>Submit</button>
+          <button className="login-form__submit-btn">Submit</button>
         </fieldset>
       </form>
     </div>
