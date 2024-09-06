@@ -44,7 +44,24 @@ export default function Form() {
   return (
     <div className="login-form">
       <h1 aria-hidden="true">Login Form</h1>
-      <form className="login-form__form">
+      <form
+        className="login-form__form"
+        onSubmit={function (e) {
+          e.preventDefault();
+          const isValid = validationCheck(); // return invalid field ID instead of boolean
+          (document.getElementById("password") as HTMLInputElement).value = "";
+          if (isValid) {
+            //sendToserver();
+            //TODO if server response error
+            document
+              .getElementById("serverMessage")
+              ?.classList.toggle("login-form__server-message--hidden");
+            (document.getElementById("email") as HTMLInputElement).focus();
+            //TODO if server response ok
+            // ... setState(loggedUser), setState("show success block")
+          }
+        }}
+      >
         <fieldset className="login-form__fieldset">
           <legend className="login-form__legend">Login Form</legend>
           <div
@@ -96,26 +113,7 @@ export default function Form() {
             ></span>
           </div>
 
-          <button
-            onClick={function (e) {
-              e.preventDefault();
-              const isValid = validationCheck(); // return invalid field ID instead of boolean
-              (document.getElementById("password") as HTMLInputElement).value =
-                "";
-              if (isValid) {
-                //sendToserver();
-                //TODO if server response error
-                document
-                  .getElementById("serverMessage")
-                  ?.classList.toggle("login-form__server-message--hidden");
-                (document.getElementById("email") as HTMLInputElement).focus();
-                //TODO if server response ok
-                // ... setState(loggedUser), setState("show success block")
-              }
-            }}
-          >
-            Submit
-          </button>
+          <button>Submit</button>
         </fieldset>
       </form>
     </div>
