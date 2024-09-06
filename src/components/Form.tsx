@@ -13,24 +13,27 @@ export default function Form() {
       emailErrorMessage!.innerText = "";
       email.setAttribute("aria-invalid", "false");
       email.removeAttribute("aria-describedby");
+
+      const passwordErrorMessage = document.getElementById(
+        "password-error-message"
+      );
+      if (password.checkValidity()) {
+        passwordErrorMessage!.innerText = "";
+        password.setAttribute("aria-invalid", "false");
+        password.removeAttribute("aria-describedby");
+      } else {
+        passwordErrorMessage!.innerText =
+          "Error: " + password.validationMessage;
+        password.setAttribute("aria-invalid", "true");
+        password.setAttribute("aria-describedby", "password-error-message");
+        password.focus();
+        result = false;
+      }
     } else {
       emailErrorMessage!.innerText = "Error: " + email.validationMessage;
       email.setAttribute("aria-invalid", "true");
       email.setAttribute("aria-describedby", "email-error-message");
-      result = false;
-    }
-
-    const passwordErrorMessage = document.getElementById(
-      "password-error-message"
-    );
-    if (password.checkValidity()) {
-      passwordErrorMessage!.innerText = "";
-      password.setAttribute("aria-invalid", "false");
-      password.removeAttribute("aria-describedby");
-    } else {
-      passwordErrorMessage!.innerText = "Error: " + password.validationMessage;
-      password.setAttribute("aria-invalid", "true");
-      password.setAttribute("aria-describedby", "password-error-message");
+      email.focus();
       result = false;
     }
     // EO TODO refactoring
@@ -108,9 +111,6 @@ export default function Form() {
                 (document.getElementById("email") as HTMLInputElement).focus();
                 //TODO if server response ok
                 // ... setState(loggedUser), setState("show success block")
-              } else {
-                (document.getElementById("email") as HTMLInputElement).focus();
-                // or (document.getElementById("password") as HTMLInputElement).focus();
               }
             }}
           >
