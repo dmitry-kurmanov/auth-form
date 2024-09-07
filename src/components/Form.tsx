@@ -45,7 +45,7 @@ export default function Form() {
   return (
     <div className="login-form">
       <h1 className="login-form__header" aria-hidden="true">
-        Login Form
+        Login
       </h1>
       <form
         className="login-form__form"
