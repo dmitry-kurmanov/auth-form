@@ -1,8 +1,10 @@
 $Base-Unit: 8px;
 $Font-Family: sans-serif;
+$Transition-Duration: 250ms;
 
 $Color--Primary: #19b394;
 $Color--Text: #161616;
+$Color--Text-Light: #8a8a8a;
 $Color--Background: #ffffff;
 $Color--Line: #e5e5e5;
 $Color--Focus: rgba(22, 22, 22, 0.8);
@@ -158,6 +160,30 @@ $Color--Alert: #e60a3e;
   gap: size(3);
 }
 
+.login-form__input-wrapper {
+  position: relative;
+}
+
+.login-form__input-label {
+  @include No-Spacing--Small;
+  position: absolute;
+  top: size(2.5);
+  left: size(5);
+  color: $Color--Text-Light;
+  transition: $Transition-Duration;
+}
+
+.login-form__input:not(:placeholder-shown),
+.login-form__input:focus {
+  & + .login-form__input-label {
+    top: size(-1.5);
+    left: size(1);
+    color: $Color--Text;
+    background-color: $Color--Background;
+    padding: size(0) size(0.5);
+  }
+}
+
 .login-form__input {
   appearance: none;
   background: none;
@@ -205,7 +231,7 @@ $Color--Alert: #e60a3e;
   padding: size(2) size(6);
   @include No-Spacing--Large;
   border-radius: size(0.5);
-  transition: 250ms;
+  transition: $Transition-Duration;
   transition-timing-function: linear;
   outline: none;
 

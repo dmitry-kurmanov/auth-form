@@ -6,6 +6,9 @@ export default function Form() {
     const email = document.getElementById("email") as HTMLInputElement;
     const password = document.getElementById("password") as HTMLInputElement;
 
+    email.classList.remove("login-form__input--invalid");
+    password.classList.remove("login-form__input--invalid");
+
     let result = true;
 
     //TODO refactoring
@@ -25,7 +28,7 @@ export default function Form() {
         password.classList.remove("login-form__input--invalid");
       } else {
         passwordErrorMessage!.innerText =
-          "Error: " + password.validationMessage;
+          "Error in Password Field: " + password.validationMessage;
         password.setAttribute("aria-invalid", "true");
         password.setAttribute("aria-describedby", "password-error-message");
         password.classList.add("login-form__input--invalid");
@@ -33,7 +36,8 @@ export default function Form() {
         result = false;
       }
     } else {
-      emailErrorMessage!.innerText = "Error: " + email.validationMessage;
+      emailErrorMessage!.innerText =
+        "Error in Email Field: " + email.validationMessage;
       email.setAttribute("aria-invalid", "true");
       email.setAttribute("aria-describedby", "email-error-message");
       email.classList.add("login-form__input--invalid");
@@ -45,6 +49,21 @@ export default function Form() {
     return result;
   };
 
+  const handleValidation = () => {
+    const isValid = validationCheck(); // return invalid field ID instead of boolean
+    (document.getElementById("password") as HTMLInputElement).value = "";
+    if (isValid) {
+      //sendToserver();
+      //TODO if server response error
+      document
+        .getElementById("serverMessage")
+        ?.classList.toggle("login-form__server-message--hidden");
+      (document.getElementById("email") as HTMLInputElement).focus();
+      //TODO if server response ok
+      // ... setState(loggedUser), setState("show success block")
+    }
+  };
+
   return (
     <div className="login-form">
       <h1 className="login-form__header" aria-hidden="true">
@@ -52,22 +71,9 @@ export default function Form() {
       </h1>
       <form
         className="login-form__form"
-        onSubmit={function (e) {
-          debugger;
-          console.log("asdasdasd");
-          e.preventDefault();
-          const isValid = validationCheck(); // return invalid field ID instead of boolean
-          (document.getElementById("password") as HTMLInputElement).value = "";
-          if (isValid) {
-            //sendToserver();
-            //TODO if server response error
-            document
-              .getElementById("serverMessage")
-              ?.classList.toggle("login-form__server-message--hidden");
-            (document.getElementById("email") as HTMLInputElement).focus();
-            //TODO if server response ok
-            // ... setState(loggedUser), setState("show success block")
-          }
+        onKeyDown={function (e) {
+          if (e.key !== "Enter") return;
+          handleValidation();
         }}
       >
         <fieldset className="login-form__fieldset">
@@ -83,19 +89,19 @@ export default function Form() {
 
           <div className="login-form__inputs-wrapper">
             <div className="login-form__input-wrapper">
-              <label className="login-form__input-label" htmlFor="email">
-                Email
-              </label>
               <input
                 id="email"
                 type="email"
                 required
-                placeholder="Please type email here..."
                 className="login-form__input"
                 aria-invalid="false"
+                placeholder=""
                 /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
                 /*aria-errormessage="email-error-message"*/
               ></input>
+              <label className="login-form__input-label" htmlFor="email">
+                Email
+              </label>
               <span
                 id="email-error-message"
                 className="login-form__input-error-message"
@@ -103,19 +109,19 @@ export default function Form() {
             </div>
 
             <div className="login-form__input-wrapper">
-              <label className="login-form__input-label" htmlFor="password">
-                Password
-              </label>
               <input
                 id="password"
                 type="password"
                 required
-                placeholder="Please type password here..."
                 className="login-form__input"
+                placeholder=""
                 aria-invalid="false"
                 /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
                 /*aria-errormessage="password-error-message"*/
               ></input>
+              <label className="login-form__input-label" htmlFor="password">
+                Password
+              </label>
               <span
                 id="password-error-message"
                 className="login-form__input-error-message"
@@ -123,7 +129,15 @@ export default function Form() {
             </div>
           </div>
 
-          <button className="login-form__submit-btn">Submit</button>
+          <button
+            className="login-form__submit-btn"
+            onSubmit={function (e) {
+              e.preventDefault();
+              handleValidation();
+            }}
+          >
+            Submit
+          </button>
         </fieldset>
       </form>
     </div>
