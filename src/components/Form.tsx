@@ -14,7 +14,7 @@ export default function Form() {
       emailErrorMessage!.innerText = "";
       email.setAttribute("aria-invalid", "false");
       email.removeAttribute("aria-describedby");
-
+      email.classList.remove("login-form__input--invalid");
       const passwordErrorMessage = document.getElementById(
         "password-error-message"
       );
@@ -22,11 +22,13 @@ export default function Form() {
         passwordErrorMessage!.innerText = "";
         password.setAttribute("aria-invalid", "false");
         password.removeAttribute("aria-describedby");
+        password.classList.remove("login-form__input--invalid");
       } else {
         passwordErrorMessage!.innerText =
           "Error: " + password.validationMessage;
         password.setAttribute("aria-invalid", "true");
         password.setAttribute("aria-describedby", "password-error-message");
+        password.classList.add("login-form__input--invalid");
         password.focus();
         result = false;
       }
@@ -34,6 +36,7 @@ export default function Form() {
       emailErrorMessage!.innerText = "Error: " + email.validationMessage;
       email.setAttribute("aria-invalid", "true");
       email.setAttribute("aria-describedby", "email-error-message");
+      email.classList.add("login-form__input--invalid");
       email.focus();
       result = false;
     }
@@ -50,6 +53,8 @@ export default function Form() {
       <form
         className="login-form__form"
         onSubmit={function (e) {
+          debugger;
+          console.log("asdasdasd");
           e.preventDefault();
           const isValid = validationCheck(); // return invalid field ID instead of boolean
           (document.getElementById("password") as HTMLInputElement).value = "";
@@ -76,44 +81,46 @@ export default function Form() {
           </div>
           <input id="anti-csrf-token" type="hidden" value="some-uuid"></input>
 
-          <div className="login-form__input-wrapper">
-            <label className="login-form__input-label" htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              placeholder="Please type email here..."
-              className="login-form__input"
-              aria-invalid="false"
-              /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
-              /*aria-errormessage="email-error-message"*/
-            ></input>
-            <span
-              id="email-error-message"
-              className="login-form__input-error-message"
-            ></span>
-          </div>
+          <div className="login-form__inputs-wrapper">
+            <div className="login-form__input-wrapper">
+              <label className="login-form__input-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                placeholder="Please type email here..."
+                className="login-form__input"
+                aria-invalid="false"
+                /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
+                /*aria-errormessage="email-error-message"*/
+              ></input>
+              <span
+                id="email-error-message"
+                className="login-form__input-error-message"
+              ></span>
+            </div>
 
-          <div className="login-form__input-wrapper">
-            <label className="login-form__input-label" htmlFor="password">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              placeholder="Please type password here..."
-              className="login-form__input"
-              aria-invalid="false"
-              /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
-              /*aria-errormessage="password-error-message"*/
-            ></input>
-            <span
-              id="password-error-message"
-              className="login-form__input-error-message"
-            ></span>
+            <div className="login-form__input-wrapper">
+              <label className="login-form__input-label" htmlFor="password">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                placeholder="Please type password here..."
+                className="login-form__input"
+                aria-invalid="false"
+                /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
+                /*aria-errormessage="password-error-message"*/
+              ></input>
+              <span
+                id="password-error-message"
+                className="login-form__input-error-message"
+              ></span>
+            </div>
           </div>
 
           <button className="login-form__submit-btn">Submit</button>
