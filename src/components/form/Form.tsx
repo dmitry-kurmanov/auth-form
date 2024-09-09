@@ -102,7 +102,14 @@ export default function Form() {
             />
           </div>
 
-          <button className="login-form__submit-btn">Submit</button>
+          <button
+            className="login-form__submit-btn"
+            onClick={function (e) {
+              handleValidation();
+            }}
+          >
+            Submit
+          </button>
         </fieldset>
       </form>
     </div>
