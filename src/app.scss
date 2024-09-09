@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+}
+
+@import "./variables.scss";
+
+@import "./components/form/Form-UX.scss";
+@import "./components/form/Form-UI.scss";
+
+@import "./components/input/Input.scss";

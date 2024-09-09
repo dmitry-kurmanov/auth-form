@@ -1,0 +1,59 @@
+.login-form__input-wrapper {
+  position: relative;
+}
+
+.login-form__input-label {
+  @include No-Spacing--Small;
+  position: absolute;
+  top: size(2.5);
+  left: size(5);
+  color: $Color--Text-Light;
+  transition: $Transition-Duration;
+}
+
+.login-form__input:not(:placeholder-shown),
+.login-form__input:focus {
+  & + .login-form__input-label {
+    top: size(-1.5);
+    left: size(1);
+    color: $Color--Text;
+    background-color: $Color--Background;
+    padding: size(0) size(0.5);
+    border-radius: size(0.5);
+  }
+}
+
+.login-form__input {
+  appearance: none;
+  background: none;
+  outline: none;
+  border: none;
+  @include No-Spacing--Small;
+  box-shadow: 0 0 0 1px $Color--Line;
+  border-radius: size(0.5);
+  padding: size(2.5) size(5) size(2);
+  width: 100%;
+  height: size(7.5);
+  box-sizing: border-box;
+  color: $Color--Text;
+
+  &:hover {
+    box-shadow: 0 0 0 size(0.125) $Color--Focus;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 size(0.25) $Color--Focus;
+  }
+
+  &.login-form__input--invalid {
+    box-shadow: 0 0 0 size(0.125) $Color--Alert;
+
+    &:hover {
+      box-shadow: 0 0 0 size(0.25) $Color--Alert;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 size(0.25) $Color--Alert;
+    }
+  }
+}

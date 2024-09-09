@@ -1,0 +1,107 @@
+$Base-Unit: 8px;
+$Font-Family: sans-serif;
+$Transition-Duration: 250ms;
+
+$Color--Primary: #19b394;
+$Color--Text: #161616;
+$Color--Text-Light: #8a8a8a;
+$Color--Background: #ffffff;
+$Color--Line: #e5e5e5;
+$Color--Focus: rgba(22, 22, 22, 0.8);
+$Color--Alert: #e60a3e;
+
+@mixin Article--Titles--XX-Large {
+  font-family: $Font-Family;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+@mixin Article--Titles--Large {
+  font-family: $Font-Family;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+@mixin No-Spacing--Large {
+  font-family: $Font-Family;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+@mixin No-Spacing--Small {
+  font-family: $Font-Family;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@mixin No-Spacing--X-Small {
+  font-family: $Font-Family;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height, or 114% */
+}
+
+@function size($multiplier) {
+  $result: calc(#{$multiplier} * #{$Base-Unit});
+  @return $result;
+}
+
+@mixin media($screens...) {
+  @each $screen in $screens {
+    @if ($screen == Large-Desktop) {
+      @media (min-width: 1600px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Desktop) {
+      @media (min-width: 1200px) and (max-width: 1600px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Desktop-2) {
+      @media (min-width: 1200px) and (max-width: 1400px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Desktop-1) {
+      @media (min-width: 1400px) and (max-width: 1600px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Tablet) {
+      @media (min-width: 904px) and (max-width: 1200px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Vertical-Tablet) {
+      @media (min-width: 600px) and (max-width: 904px) {
+        @content;
+      }
+    }
+
+    @if ($screen == Mobile) {
+      @media (max-width: 600px) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin Button-Hovers--Primary {
+  box-shadow: 0px 8px 32px rgba(25, 179, 148, 0.25);
+}

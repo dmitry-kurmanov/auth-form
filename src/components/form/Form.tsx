@@ -1,5 +1,4 @@
-import "./Form-UX.scss";
-import "./Form-UI.scss";
+import Input from "../input/Input";
 
 export default function Form() {
   const validationCheck = (): boolean => {
@@ -71,73 +70,39 @@ export default function Form() {
       </h1>
       <form
         className="login-form__form"
-        onKeyDown={function (e) {
-          if (e.key !== "Enter") return;
+        onSubmit={function (e) {
+          e.preventDefault();
           handleValidation();
         }}
       >
         <fieldset className="login-form__fieldset">
           <legend className="login-form__legend">Login Form</legend>
-          <div
-            className="login-form__server-message login-form__server-message--hidden"
-            role="alert"
-            id="serverMessage"
-          >
-            Something went wrong...
-          </div>
           <input id="anti-csrf-token" type="hidden" value="some-uuid"></input>
 
-          <div className="login-form__inputs-wrapper">
-            <div className="login-form__input-wrapper">
-              <input
-                id="email"
-                type="email"
-                required
-                className="login-form__input"
-                aria-invalid="false"
-                placeholder=""
-                /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
-                /*aria-errormessage="email-error-message"*/
-              ></input>
-              <label className="login-form__input-label" htmlFor="email">
-                Email
-              </label>
-              <span
-                id="email-error-message"
-                className="login-form__input-error-message"
-              ></span>
-            </div>
-
-            <div className="login-form__input-wrapper">
-              <input
-                id="password"
-                type="password"
-                required
-                className="login-form__input"
-                placeholder=""
-                aria-invalid="false"
-                /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
-                /*aria-errormessage="password-error-message"*/
-              ></input>
-              <label className="login-form__input-label" htmlFor="password">
-                Password
-              </label>
-              <span
-                id="password-error-message"
-                className="login-form__input-error-message"
-              ></span>
-            </div>
-          </div>
-
-          <button
-            className="login-form__submit-btn"
-            onSubmit={function (e) {
-              e.preventDefault();
+          <div
+            className="login-form__inputs-wrapper"
+            onKeyDown={function (e) {
+              if (e.key !== "Enter") return;
               handleValidation();
             }}
           >
-            Submit
-          </button>
+            <div
+              className="login-form__server-message login-form__server-message--hidden"
+              role="alert"
+              id="serverMessage"
+            >
+              Something went wrong...
+            </div>
+            <Input id="email" type="email" isRequred={true} labelText="Email" />
+            <Input
+              id="password"
+              type="password"
+              isRequred={true}
+              labelText="Password"
+            />
+          </div>
+
+          <button className="login-form__submit-btn">Submit</button>
         </fieldset>
       </form>
     </div>
