@@ -50,7 +50,8 @@ export default function Form() {
 
   const handleValidation = () => {
     const isValid = validationCheck(); // return invalid field ID instead of boolean
-    (document.getElementById("password") as HTMLInputElement).value = "";
+
+    // (document.getElementById("password") as HTMLInputElement).value = "";
     if (isValid) {
       //sendToserver();
       //TODO if server response error
@@ -73,6 +74,7 @@ export default function Form() {
         onSubmit={function (e) {
           e.preventDefault();
           handleValidation();
+          console.log("post to server + server validation");
         }}
       >
         <fieldset className="login-form__fieldset">
@@ -81,10 +83,11 @@ export default function Form() {
 
           <div
             className="login-form__inputs-wrapper"
-            onKeyDown={function (e) {
-              if (e.key !== "Enter") return;
-              handleValidation();
-            }}
+            // onKeyDown={function (e) {
+            //   if (e.key !== "Enter") return;
+            //   handleValidation();
+            //   console.log("client validation 1");
+            // }}
           >
             <div
               className="login-form__server-message login-form__server-message--hidden"
@@ -104,8 +107,10 @@ export default function Form() {
 
           <button
             className="login-form__submit-btn"
+            type="submit"
             onClick={function (e) {
               handleValidation();
+              console.log("client validation 2");
             }}
           >
             Submit
