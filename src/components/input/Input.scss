@@ -36,6 +36,7 @@
   height: size(7.5);
   box-sizing: border-box;
   color: $Color--Text;
+  transition: $Transition-Duration;
 
   &:hover {
     box-shadow: 0 0 0 size(0.125) $Color--Focus;
