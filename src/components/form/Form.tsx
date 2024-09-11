@@ -6,76 +6,36 @@ export default function Form() {
   const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
 
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+  const [emailValiddationMessage, setEmailValiddationMessage] =
+    useState<string>("");
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+  const [passwordValiddationMessage, setPasswordValiddationMessage] =
+    useState<string>("");
 
   const validationCheck = () => {
+    console.log("validation check");
     const email = emailRef.current;
     const password = passwordRef.current;
 
     if (!email || !password) return;
 
     setIsEmailValid(email.checkValidity());
+    setEmailValiddationMessage(email.validationMessage);
     setIsPasswordValid(password.checkValidity());
-
-    // //
-
-    // email.classList.remove("login-form__input--invalid");
-    // password.classList.remove("login-form__input--invalid");
-
-    // let result = true;
-
-    // //TODO refactoring
-    // const emailErrorMessage = document.getElementById("email-error-message");
-    // if (email.checkValidity()) {
-    //   emailErrorMessage!.innerText = "";
-    //   email.setAttribute("aria-invalid", "false");
-    //   email.removeAttribute("aria-describedby");
-    //   email.classList.remove("login-form__input--invalid");
-    //   const passwordErrorMessage = document.getElementById(
-    //     "password-error-message"
-    //   );
-    //   if (password.checkValidity()) {
-    //     passwordErrorMessage!.innerText = "";
-    //     password.setAttribute("aria-invalid", "false");
-    //     password.removeAttribute("aria-describedby");
-    //     password.classList.remove("login-form__input--invalid");
-    //   } else {
-    //     passwordErrorMessage!.innerText =
-    //       "Error in Password Field: " + password.validationMessage;
-    //     password.setAttribute("aria-invalid", "true");
-    //     password.setAttribute("aria-describedby", "password-error-message");
-    //     password.classList.add("login-form__input--invalid");
-    //     password.focus();
-    //     result = false;
-    //   }
-    // } else {
-    //   emailErrorMessage!.innerText =
-    //     "Error in Email Field: " + email.validationMessage;
-    //   email.setAttribute("aria-invalid", "true");
-    //   email.setAttribute("aria-describedby", "email-error-message");
-    //   email.classList.add("login-form__input--invalid");
-    //   email.focus();
-    //   result = false;
-    // }
-    // // EO TODO refactoring
-
-    // return result;
+    setPasswordValiddationMessage(password.validationMessage);
   };
 
-  const handleValidation = () => {
-    validationCheck(); // return invalid field ID instead of boolean
-
-    // (document.getElementById("password") as HTMLInputElement).value = "";
-    if (isEmailValid && isPasswordValid) {
-      //sendToserver();
-      //TODO if server response error
-      // document
-      //   .getElementById("serverMessage")
-      //   ?.classList.toggle("login-form__server-message--hidden");
-      // (document.getElementById("email") as HTMLInputElement).focus();
-      //TODO if server response ok
-      // ... setState(loggedUser), setState("show success block")
-    }
+  const submitForm = () => {
+    if (!isEmailValid || !isPasswordValid) return;
+    console.log("go to server bro!");
+    //sendToserver();
+    //TODO if server response error
+    // document
+    //   .getElementById("serverMessage")
+    //   ?.classList.toggle("login-form__server-message--hidden");
+    // (document.getElementById("email") as HTMLInputElement).focus();
+    //TODO if server response ok
+    // ... setState(loggedUser), setState("show success block")
   };
 
   return (
@@ -87,22 +47,14 @@ export default function Form() {
         className="login-form__form"
         onSubmit={function (e) {
           e.preventDefault();
-          handleValidation();
-          console.log("post to server + server validation");
+          submitForm();
         }}
       >
         <fieldset className="login-form__fieldset">
           <legend className="login-form__legend">Login Form</legend>
           <input id="anti-csrf-token" type="hidden" value="some-uuid"></input>
 
-          <div
-            className="login-form__inputs-wrapper"
-            // onKeyDown={function (e) {
-            //   if (e.key !== "Enter") return;
-            //   handleValidation();
-            //   console.log("client validation 1");
-            // }}
-          >
+          <div className="login-form__inputs-wrapper">
             <div
               className="login-form__server-message login-form__server-message--hidden"
               role="alert"
@@ -117,6 +69,7 @@ export default function Form() {
               labelText="Email"
               ref={emailRef}
               isValid={isEmailValid}
+              validationMessage={emailValiddationMessage}
             />
             <Input
               id="password"
@@ -125,6 +78,7 @@ export default function Form() {
               labelText="Password"
               ref={passwordRef}
               isValid={isPasswordValid}
+              validationMessage={passwordValiddationMessage}
             />
           </div>
 
@@ -132,8 +86,7 @@ export default function Form() {
             className="login-form__submit-btn"
             type="submit"
             onClick={function (e) {
-              handleValidation();
-              console.log("client validation 2");
+              validationCheck();
             }}
           >
             Submit
