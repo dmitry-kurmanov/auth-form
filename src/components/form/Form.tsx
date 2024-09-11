@@ -29,16 +29,17 @@ export default function Form() {
 
   const submitForm = () => {
     if (!isEmailValid || !isPasswordValid) return;
+
+    // const result = await sendToserver();
+
+    // TODO if server response error
     console.log("go to server bro!");
     setServerMessage("Something went wrong...");
-    //sendToserver();
-    //TODO if server response error
-    // document
-    //   .getElementById("serverMessage")
-    //   ?.classList.toggle("login-form__server-message--hidden");
-    // (document.getElementById("email") as HTMLInputElement).focus();
+    emailRef.current?.focus();
+
     //TODO if server response ok
-    // ... setState(loggedUser), setState("show success block")
+    // ... setIsLogged(true)
+    // show success text + alert for a11y something like "You are successfully logged in."
   };
 
   return (
