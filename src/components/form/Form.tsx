@@ -31,7 +31,7 @@ export default function Form() {
     url: string,
     params: { method: string; body: FormData }
   ): Promise<{ ok: boolean; json?: Function; statusText?: string }> {
-    console.log(`fetching from ${url} by method ${params.method}`);
+    console.log(`fetching from ${url} by method ${params.method}`); //TODO
 
     return new Promise((resolve, reject) => {
       // Fetch promises only reject with a TypeError when a network error occurs.
@@ -39,10 +39,23 @@ export default function Form() {
       //   reject("network error occurs");
       //   return;
       // }
+
+      const email = params.body.get("email");
+      const password = params.body.get("password");
+
       setTimeout(() => {
-        reject("network error occurs");
+        if (email === "test@mail.org" && password === "123") {
+          resolve({
+            ok: true,
+            json: () => {
+              return { loginToken: 123123123 };
+            },
+            statusText: "Successfully Logged In",
+          });
+        } else {
+          resolve({ ok: false, statusText: "Wrong Credentials" });
+        }
       }, 3000);
-      //resolve({ ok: false, statusText: "Wrong Credentials" });
     });
   }
 
@@ -56,8 +69,14 @@ export default function Form() {
     fetchMock(form.action, { method: "post", body: new FormData(form) })
       .then((response) => {
         if (response.ok) {
-          if (!response.json) return;
-          console.dir(response.json());
+          if (!response.json) {
+            setServerMessage(
+              `Server responded the bad answer. Please cotact our support team to resolve the problem.`
+            );
+            return;
+          }
+          console.dir(response.json().loginToken);
+          setServerMessage("");
         } else {
           setServerMessage(`Can't login... ${response.statusText}`);
           emailRef.current?.focus();

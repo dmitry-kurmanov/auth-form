@@ -1,10 +1,4 @@
-import {
-  ForwardedRef,
-  MutableRefObject,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from "react";
+import { ForwardedRef, forwardRef } from "react";
 
 export interface IInputParameters {
   id: string;
@@ -32,6 +26,7 @@ const Input = forwardRef(function Input(
     <div className="login-form__input-wrapper">
       <input
         id={id}
+        name={id}
         type={type}
         required={isRequred}
         className={`login-form__input ${
