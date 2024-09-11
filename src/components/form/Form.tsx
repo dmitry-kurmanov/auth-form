@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef, useState } from "react";
+import { FormEvent, MutableRefObject, useRef, useState } from "react";
 import Input from "../input/Input";
 
 export default function Form() {
@@ -15,7 +15,7 @@ export default function Form() {
   const [serverMessage, setServerMessage] = useState<string>("");
 
   const validationCheck = () => {
-    console.log("validation check");
+    console.log("validation check"); //TODO
     const email = emailRef.current;
     const password = passwordRef.current;
 
@@ -27,15 +27,46 @@ export default function Form() {
     setPasswordValiddationMessage(password.validationMessage);
   };
 
-  const submitForm = () => {
+  async function fetchMock(
+    url: string,
+    params: { method: string; body: FormData }
+  ): Promise<{ ok: boolean; json?: Function; statusText?: string }> {
+    console.log(`fetching from ${url} by method ${params.method}`);
+
+    return new Promise((resolve, reject) => {
+      // Fetch promises only reject with a TypeError when a network error occurs.
+      // if ("network error occurs") {
+      //   reject("network error occurs");
+      //   return;
+      // }
+      setTimeout(() => {
+        reject("network error occurs");
+      }, 3000);
+      //resolve({ ok: false, statusText: "Wrong Credentials" });
+    });
+  }
+
+  const submitForm = (e: FormEvent) => {
     if (!isEmailValid || !isPasswordValid) return;
 
-    // const result = await sendToserver();
+    console.log("submit form"); //TODO
 
-    // TODO if server response error
-    console.log("go to server bro!");
-    setServerMessage("Something went wrong...");
-    emailRef.current?.focus();
+    const form = e.target as HTMLFormElement;
+
+    fetchMock(form.action, { method: "post", body: new FormData(form) })
+      .then((response) => {
+        if (response.ok) {
+          if (!response.json) return;
+          console.dir(response.json());
+        } else {
+          setServerMessage(`Can't login... ${response.statusText}`);
+          emailRef.current?.focus();
+        }
+      })
+      .catch((error) => {
+        setServerMessage(`Something went wrong... ${error}`);
+        emailRef.current?.focus();
+      });
 
     //TODO if server response ok
     // ... setIsLogged(true)
@@ -49,9 +80,10 @@ export default function Form() {
       </h1>
       <form
         className="login-form__form"
-        onSubmit={function (e) {
+        action="/login"
+        onSubmit={function (e: FormEvent) {
           e.preventDefault();
-          submitForm();
+          submitForm(e);
         }}
       >
         <fieldset className="login-form__fieldset">
