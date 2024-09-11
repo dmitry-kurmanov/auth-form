@@ -75,7 +75,7 @@ export default function Form() {
             );
             return;
           }
-          console.dir(response.json().loginToken);
+          console.dir(response.json().loginToken); //TODO
           setServerMessage("");
         } else {
           setServerMessage(`Can't login... ${response.statusText}`);
