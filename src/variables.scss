@@ -2,12 +2,12 @@ $Base-Unit: 8px;
 $Font-Family: sans-serif;
 $Transition-Duration: 250ms;
 
-$Color--Primary: #00bf7d;
+$Color--Primary: #9b8bf4;
 $Color--Text: #161616;
 $Color--Background: #ffffff;
 $Color--Line: #e5e5e5;
 $Color--Focus: rgba(22, 22, 22, 0.8);
-$Color--Alert: #e60a3e;
+$Color--Alert: #c44601;
 
 @mixin Article--Titles--XX-Large {
   font-family: $Font-Family;
@@ -102,5 +102,5 @@ $Color--Alert: #e60a3e;
 }
 
 @mixin Button-Hovers--Primary {
-  box-shadow: 0px 8px 32px rgba(25, 179, 148, 0.25);
+  box-shadow: 0px 8px 32px rgba(155, 139, 244, 0.25);
 }
