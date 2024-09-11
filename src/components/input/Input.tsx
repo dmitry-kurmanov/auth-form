@@ -34,8 +34,8 @@ const Input = forwardRef(function Input(
         id={id}
         type={type}
         required={isRequred}
-        className={`login-form__input${
-          isValid ? "" : " login-form__input--invalid"
+        className={`login-form__input ${
+          isValid ? "" : "login-form__input--invalid"
         }`}
         aria-invalid={!isValid}
         aria-describedby={isValid ? undefined : errorMessageId}

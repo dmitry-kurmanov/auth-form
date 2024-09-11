@@ -3,14 +3,16 @@ import Input from "../input/Input";
 
 export default function Form() {
   const emailRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
-  const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
-
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [emailValiddationMessage, setEmailValiddationMessage] =
     useState<string>("");
+
+  const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
   const [passwordValiddationMessage, setPasswordValiddationMessage] =
     useState<string>("");
+
+  const [serverMessage, setServerMessage] = useState<string>("");
 
   const validationCheck = () => {
     console.log("validation check");
@@ -28,6 +30,7 @@ export default function Form() {
   const submitForm = () => {
     if (!isEmailValid || !isPasswordValid) return;
     console.log("go to server bro!");
+    setServerMessage("Something went wrong...");
     //sendToserver();
     //TODO if server response error
     // document
@@ -56,11 +59,13 @@ export default function Form() {
 
           <div className="login-form__inputs-wrapper">
             <div
-              className="login-form__server-message login-form__server-message--hidden"
+              className={`login-form__server-message ${
+                serverMessage ? "" : "login-form__server-message--hidden"
+              }`}
               role="alert"
               id="serverMessage"
             >
-              Something went wrong...
+              {serverMessage}
             </div>
             <Input
               id="email"
