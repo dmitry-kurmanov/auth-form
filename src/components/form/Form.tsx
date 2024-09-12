@@ -1,5 +1,5 @@
 import { FormEvent, MutableRefObject, useRef, useState } from "react";
-import Input from "../input/Input";
+import Input from "./Input";
 import Loading from "../loading/Loading";
 
 export default function Form() {
