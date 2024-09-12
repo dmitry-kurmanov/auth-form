@@ -2,29 +2,33 @@ import { FormEvent, MutableRefObject, useRef, useState } from "react";
 import Input from "../input/Input";
 
 export default function Form() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const emailRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [emailValiddationMessage, setEmailValiddationMessage] =
     useState<string>("");
+
+  const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
+  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
+  const [passwordValiddationMessage, setPasswordValiddationMessage] =
+    useState<string>("");
+
+  const serverMessageRef: MutableRefObject<HTMLLabelElement | null> =
+    useRef(null);
+  const [serverMessage, setServerMessage] = useState<string>("");
+
   const checkEmailValidation = () => {
     const email = emailRef.current!;
     setIsEmailValid(email.checkValidity());
     setEmailValiddationMessage(email.validationMessage);
   };
 
-  const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
-  const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
-  const [passwordValiddationMessage, setPasswordValiddationMessage] =
-    useState<string>("");
   const checkPasswordValidation = () => {
     const password = passwordRef.current!;
     setIsPasswordValid(password.checkValidity());
     setPasswordValiddationMessage(password.validationMessage);
   };
-
-  const serverMessageRef: MutableRefObject<HTMLLabelElement | null> =
-    useRef(null);
-  const [serverMessage, setServerMessage] = useState<string>("");
 
   async function fetchMock(
     url: string,
@@ -61,6 +65,7 @@ export default function Form() {
   const submitForm = (e: FormEvent) => {
     if (!isEmailValid || !isPasswordValid) return;
 
+    setIsSubmitting(true);
     document.body.setAttribute("aria-busy", "true");
     setServerMessage(`Submitting form...`);
 
@@ -70,8 +75,6 @@ export default function Form() {
 
     fetchMock(form.action, { method: "post", body: new FormData(form) })
       .then((response) => {
-        document.body.removeAttribute("aria-busy");
-
         if (response.ok) {
           if (!response.json) {
             setServerMessage(
@@ -87,11 +90,12 @@ export default function Form() {
         }
       })
       .catch((error) => {
-        document
-          .getElementById("serverMessage")
-          ?.setAttribute("aria-busy", "false");
         setServerMessage(`Something went wrong... ${error}`);
         emailRef.current?.focus();
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        document.body.removeAttribute("aria-busy");
       });
 
     //TODO if server response ok
@@ -118,7 +122,11 @@ export default function Form() {
 
           <div className="login-form__inputs-wrapper">
             <label
-              className="login-form__server-message"
+              className={`login-form__server-message ${
+                isSubmitting
+                  ? "login-form__server-message--visually-hidden"
+                  : ""
+              }`}
               aria-live="polite"
               id="serverMessage"
               ref={serverMessageRef}

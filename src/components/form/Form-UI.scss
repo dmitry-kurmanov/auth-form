@@ -66,11 +66,15 @@
   color: $Color--Alert;
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: size(1);
+  height: size(4);
 
   @include media(Mobile) {
     @include No-Spacing--X-Small;
   }
+}
+
+.login-form__server-message--visually-hidden {
+  color: transparent;
 }
 
 .login-form__submit-btn {
