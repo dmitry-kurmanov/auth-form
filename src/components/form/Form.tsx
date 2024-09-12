@@ -35,10 +35,10 @@ export default function Form() {
   async function fetchMock(
     url: string,
     params: { method: string; body: FormData }
-  ): Promise<{ ok: boolean; json?: Function; statusText?: string }> {
+  ): Promise<{ ok: boolean; json?: ()=>{loginToken:number}; statusText?: string }> {
     console.info(`fetching from: ${url} by method: ${params.method}`);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve/*, reject*/) => {
       // The Real Fetch only reject with a TypeError when a network error occurs.
       // if ("network error occurs") {
       //   reject("network error occurs");
