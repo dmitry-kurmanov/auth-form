@@ -6,26 +6,23 @@ export default function Form() {
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
   const [emailValiddationMessage, setEmailValiddationMessage] =
     useState<string>("");
+  const checkEmailValidation = () => {
+    const email = emailRef.current!;
+    setIsEmailValid(email.checkValidity());
+    setEmailValiddationMessage(email.validationMessage);
+  };
 
   const passwordRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(true);
   const [passwordValiddationMessage, setPasswordValiddationMessage] =
     useState<string>("");
-
-  const [serverMessage, setServerMessage] = useState<string>("");
-
-  const validationCheck = () => {
-    console.log("validation check"); //TODO
-    const email = emailRef.current;
-    const password = passwordRef.current;
-
-    if (!email || !password) return;
-
-    setIsEmailValid(email.checkValidity());
-    setEmailValiddationMessage(email.validationMessage);
+  const checkPasswordValidation = () => {
+    const password = passwordRef.current!;
     setIsPasswordValid(password.checkValidity());
     setPasswordValiddationMessage(password.validationMessage);
   };
+
+  const [serverMessage, setServerMessage] = useState<string>("");
 
   async function fetchMock(
     url: string,
@@ -127,6 +124,10 @@ export default function Form() {
               ref={emailRef}
               isValid={isEmailValid}
               validationMessage={emailValiddationMessage}
+              onInputCallback={() => {
+                if (isEmailValid) return;
+                checkEmailValidation();
+              }}
             />
             <Input
               id="password"
@@ -136,14 +137,19 @@ export default function Form() {
               ref={passwordRef}
               isValid={isPasswordValid}
               validationMessage={passwordValiddationMessage}
+              onInputCallback={() => {
+                if (isPasswordValid) return;
+                checkPasswordValidation();
+              }}
             />
           </div>
 
           <button
             className="login-form__submit-btn"
             type="submit"
-            onClick={function (e) {
-              validationCheck();
+            onClick={function () {
+              checkEmailValidation();
+              checkPasswordValidation();
             }}
           >
             Submit

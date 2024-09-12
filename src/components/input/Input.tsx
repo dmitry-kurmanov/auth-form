@@ -7,6 +7,7 @@ export interface IInputParameters {
   labelText: string;
   isValid: boolean;
   validationMessage: string;
+  onInputCallback: () => void;
 }
 
 const Input = forwardRef(function Input(
@@ -17,6 +18,7 @@ const Input = forwardRef(function Input(
     labelText,
     isValid,
     validationMessage,
+    onInputCallback,
   }: IInputParameters,
   forwardedRef: ForwardedRef<HTMLInputElement>
 ) {
@@ -38,6 +40,7 @@ const Input = forwardRef(function Input(
         /* aria-errormessage is better than aria-describedby but unfortunatelly is not fully supported https://stackoverflow.com/a/78675883/6623551 */
         /*aria-errormessage="email-error-message"*/
         ref={forwardedRef}
+        onInput={onInputCallback}
       ></input>
       <label className="login-form__input-label" htmlFor={id}>
         {labelText}
