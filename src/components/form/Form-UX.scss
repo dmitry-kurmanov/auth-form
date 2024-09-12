@@ -26,6 +26,6 @@
   display: none;
 }
 
-.login-form__server-message--hidden {
-  visibility: hidden;
+.login-form__server-message--visually-hidden {
+  @include visuallyHidden();
 }

@@ -22,6 +22,8 @@ export default function Form() {
     setPasswordValiddationMessage(password.validationMessage);
   };
 
+  const serverMessageRef: MutableRefObject<HTMLLabelElement | null> =
+    useRef(null);
   const [serverMessage, setServerMessage] = useState<string>("");
 
   async function fetchMock(
@@ -59,12 +61,17 @@ export default function Form() {
   const submitForm = (e: FormEvent) => {
     if (!isEmailValid || !isPasswordValid) return;
 
+    document.body.setAttribute("aria-busy", "true");
+    setServerMessage(`Submitting form...`);
+
     console.log("submit form"); //TODO
 
     const form = e.target as HTMLFormElement;
 
     fetchMock(form.action, { method: "post", body: new FormData(form) })
       .then((response) => {
+        document.body.removeAttribute("aria-busy");
+
         if (response.ok) {
           if (!response.json) {
             setServerMessage(
@@ -80,6 +87,9 @@ export default function Form() {
         }
       })
       .catch((error) => {
+        document
+          .getElementById("serverMessage")
+          ?.setAttribute("aria-busy", "false");
         setServerMessage(`Something went wrong... ${error}`);
         emailRef.current?.focus();
       });
@@ -107,15 +117,14 @@ export default function Form() {
           <input id="anti-csrf-token" type="hidden" value="some-uuid"></input>
 
           <div className="login-form__inputs-wrapper">
-            <div
-              className={`login-form__server-message ${
-                serverMessage ? "" : "login-form__server-message--hidden"
-              }`}
-              role="alert"
+            <label
+              className="login-form__server-message"
+              aria-live="polite"
               id="serverMessage"
+              ref={serverMessageRef}
             >
               {serverMessage}
-            </div>
+            </label>
             <Input
               id="email"
               type="email"
