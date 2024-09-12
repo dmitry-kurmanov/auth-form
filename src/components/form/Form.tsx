@@ -1,5 +1,6 @@
 import { FormEvent, MutableRefObject, useRef, useState } from "react";
 import Input from "../input/Input";
+import Loading from "../loading/Loading";
 
 export default function Form() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -34,10 +35,10 @@ export default function Form() {
     url: string,
     params: { method: string; body: FormData }
   ): Promise<{ ok: boolean; json?: Function; statusText?: string }> {
-    console.log(`fetching from ${url} by method ${params.method}`); //TODO
+    console.info(`fetching from: ${url} by method: ${params.method}`);
 
     return new Promise((resolve, reject) => {
-      // Fetch promises only reject with a TypeError when a network error occurs.
+      // The Real Fetch only reject with a TypeError when a network error occurs.
       // if ("network error occurs") {
       //   reject("network error occurs");
       //   return;
@@ -58,7 +59,7 @@ export default function Form() {
         } else {
           resolve({ ok: false, statusText: "Wrong Credentials" });
         }
-      }, 3000);
+      }, 2000);
     });
   }
 
@@ -68,8 +69,6 @@ export default function Form() {
     setIsSubmitting(true);
     document.body.setAttribute("aria-busy", "true");
     setServerMessage(`Submitting form...`);
-
-    console.log("submit form"); //TODO
 
     const form = e.target as HTMLFormElement;
 
@@ -83,6 +82,9 @@ export default function Form() {
             return;
           }
           console.dir(response.json().loginToken); //TODO
+          //TODO if server response ok
+          // ... setIsLogged(true)
+          // show success text + alert for a11y something like "You are successfully logged in."
           setServerMessage("");
         } else {
           setServerMessage(`Can't login... ${response.statusText}`);
@@ -97,10 +99,6 @@ export default function Form() {
         setIsSubmitting(false);
         document.body.removeAttribute("aria-busy");
       });
-
-    //TODO if server response ok
-    // ... setIsLogged(true)
-    // show success text + alert for a11y something like "You are successfully logged in."
   };
 
   return (
@@ -173,6 +171,8 @@ export default function Form() {
           </button>
         </fieldset>
       </form>
+
+      <Loading isHidden={!isSubmitting} />
     </div>
   );
 }
