@@ -4,6 +4,7 @@ import Loading from "../loading/Loading";
 
 export default function Form() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [loginToken, setLoginToken] = useState<number | null>(null);
 
   const emailRef: MutableRefObject<HTMLInputElement | null> = useRef(null);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
@@ -67,6 +68,7 @@ export default function Form() {
     if (!isEmailValid || !isPasswordValid) return;
 
     setIsSubmitting(true);
+    setLoginToken(null);
     document.body.setAttribute("aria-busy", "true");
     setServerMessage(`Submitting form...`);
 
@@ -81,11 +83,8 @@ export default function Form() {
             );
             return;
           }
-          console.dir(response.json().loginToken); //TODO
-          //TODO if server response ok
-          // ... setIsLogged(true)
-          // show success text + alert for a11y something like "You are successfully logged in."
-          setServerMessage("");
+          setLoginToken(response.json().loginToken);
+          setServerMessage("You Are Successfully Logged In!");
         } else {
           setServerMessage(`Can't login... ${response.statusText}`);
           emailRef.current?.focus();
@@ -99,6 +98,17 @@ export default function Form() {
         setIsSubmitting(false);
         document.body.removeAttribute("aria-busy");
       });
+  };
+
+  const getServerMessageClasses = () => {
+    const base = "login-form__server-message";
+    let modificators = "";
+    if (isSubmitting) {
+      modificators = `${base}--visually-hidden`;
+    } else if (loginToken) {
+      modificators = `${base}--success`;
+    }
+    return `${base} ${modificators}`;
   };
 
   return (
@@ -120,11 +130,7 @@ export default function Form() {
 
           <div className="login-form__inputs-wrapper">
             <label
-              className={`login-form__server-message ${
-                isSubmitting
-                  ? "login-form__server-message--visually-hidden"
-                  : ""
-              }`}
+              className={getServerMessageClasses()}
               aria-live="polite"
               id="serverMessage"
               ref={serverMessageRef}

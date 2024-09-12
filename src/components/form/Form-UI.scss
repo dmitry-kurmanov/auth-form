@@ -76,6 +76,10 @@
   color: transparent;
 }
 
+.login-form__server-message--success {
+  color: seagreen;
+}
+
 .login-form__submit-btn {
   margin-top: size(8);
   cursor: pointer;
