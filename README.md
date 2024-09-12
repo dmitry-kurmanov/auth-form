@@ -2,7 +2,9 @@
 - Login: `test@mail.org`
 - Password: `123`
 
-## Based on React + TypeScript + Vite
+## Created with StackBlitz: React + TypeScript + Vite
+
+https://stackblitz.com/~/github.com/dmitry-kurmanov/auth-form
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
