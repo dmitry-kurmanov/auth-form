@@ -42,7 +42,7 @@
     box-shadow: 0 0 0 size(0.125) $Color--Focus;
   }
 
-  &:focus {
+  &:focus-visible {
     box-shadow: 0 0 0 size(0.25) $Color--Focus;
   }
 
@@ -53,7 +53,7 @@
       box-shadow: 0 0 0 size(0.25) $Color--Alert;
     }
 
-    &:focus {
+    &:focus-visible {
       box-shadow: 0 0 0 size(0.25) $Color--Alert;
     }
   }

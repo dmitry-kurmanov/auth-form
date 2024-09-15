@@ -3,6 +3,7 @@ import { ForwardedRef, forwardRef } from "react";
 export interface IInputParameters {
   id: string;
   type: string;
+  autocomplete: string;
   isRequred: boolean;
   labelText: string;
   isValid: boolean;
@@ -14,6 +15,7 @@ const Input = forwardRef(function Input(
   {
     id,
     type,
+    autocomplete,
     isRequred,
     labelText,
     isValid,
@@ -30,6 +32,7 @@ const Input = forwardRef(function Input(
         id={id}
         name={id}
         type={type}
+        autoComplete={autocomplete}
         required={isRequred}
         className={`login-form__input ${
           isValid ? "" : "login-form__input--invalid"

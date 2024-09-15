@@ -16,8 +16,6 @@ export default function Form() {
   const [passwordValiddationMessage, setPasswordValiddationMessage] =
     useState<string>("");
 
-  const serverMessageRef: MutableRefObject<HTMLLabelElement | null> =
-    useRef(null);
   const [serverMessage, setServerMessage] = useState<string>("");
 
   const checkEmailValidation = () => {
@@ -35,10 +33,14 @@ export default function Form() {
   async function fetchMock(
     url: string,
     params: { method: string; body: FormData }
-  ): Promise<{ ok: boolean; json?: ()=>{loginToken:number}; statusText?: string }> {
+  ): Promise<{
+    ok: boolean;
+    json?: () => { loginToken: number };
+    statusText?: string;
+  }> {
     console.info(`fetching from: ${url} by method: ${params.method}`);
 
-    return new Promise((resolve/*, reject*/) => {
+    return new Promise((resolve /*, reject*/) => {
       // The Real Fetch only reject with a TypeError when a network error occurs.
       // if ("network error occurs") {
       //   reject("network error occurs");
@@ -66,6 +68,7 @@ export default function Form() {
 
   const submitForm = (e: FormEvent) => {
     if (!isEmailValid || !isPasswordValid) return;
+    if (isSubmitting) return;
 
     setIsSubmitting(true);
     setLoginToken(null);
@@ -133,13 +136,13 @@ export default function Form() {
               className={getServerMessageClasses()}
               aria-live="polite"
               id="serverMessage"
-              ref={serverMessageRef}
             >
               {serverMessage}
             </label>
             <Input
               id="email"
               type="email"
+              autocomplete="email"
               isRequred={true}
               labelText="Email"
               ref={emailRef}
@@ -153,6 +156,7 @@ export default function Form() {
             <Input
               id="password"
               type="password"
+              autocomplete="current-password"
               isRequred={true}
               labelText="Password"
               ref={passwordRef}

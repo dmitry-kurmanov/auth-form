@@ -112,7 +112,7 @@
     transform: translateY(size(-0.25));
   }
 
-  &:focus {
+  &:focus-visible {
     box-shadow: 0 0 0 size(0.25) $Color--Focus;
   }
 }
