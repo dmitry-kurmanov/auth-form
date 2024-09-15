@@ -2,6 +2,9 @@
 - Login: `test@mail.org`
 - Password: `123`
 
+## Checklist from Evil Martians
+https://evilmartians.com/chronicles/html-best-practices-for-login-and-signup-forms
+
 ## Created with StackBlitz: React + TypeScript + Vite
 
 https://stackblitz.com/~/github.com/dmitry-kurmanov/auth-form
