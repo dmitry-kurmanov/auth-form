@@ -127,7 +127,7 @@ export default function Form() {
           submitForm(e);
         }}
       >
-        <fieldset className="login-form__fieldset">
+        <fieldset className="login-form__fieldset" disabled={isSubmitting}>
           <legend className="login-form__legend">Login Form</legend>
           <input id="anti-csrf-token" type="hidden" value="some-uuid"></input>
 
